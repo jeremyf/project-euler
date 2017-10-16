@@ -3,3 +3,22 @@
 #
 # Find the largest palindrome made from the product of two 3-digit numbers.
 # @see https://projecteuler.net/problem=4
+def is_palendrome?(value)
+  terms = value.to_s.split('')
+  pivot = terms.size / 2
+  terms[0..(pivot-1)].join == terms[(-1*pivot)..-1].join.reverse
+end
+
+RANGE = (100..999)
+Largest = Struct.new(:value, :left, :right)
+largest = Largest.new(0, 0, 0)
+RANGE.each do |i|
+  RANGE.each do |j|
+    value = i * j
+    next unless is_palendrome?(value)
+    next if largest.value > value
+    largest = Largest.new(value, i, j)
+  end
+end
+
+puts largest.value
