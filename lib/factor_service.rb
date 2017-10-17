@@ -12,6 +12,17 @@ module FactorService
     a * b / gcd(a, b)
   end
 
+  def self.proper_divisors_of(value)
+    divisors = [1]
+    Math.sqrt(value).to_i.downto(2).each do |i|
+      if value % i == 0
+        divisors << i
+        divisors << value / i
+      end
+    end
+    divisors.sort
+  end
+
   def self.factors_of(value:)
     return [1] if value == 1
     factors = [1]
@@ -60,6 +71,16 @@ if __FILE__ == $0
       describe 'for lcm 5 & 17' do
         subject { described_class.lcm(5, 17) }
         it { is_expected.to eq(85) }
+      end
+    end
+    describe '.proper_divisors_of' do
+      describe 'for 220' do
+        subject { described_class.proper_divisors_of(220) }
+        it { is_expected.to eq([1, 2, 4, 5, 10, 11, 20, 22, 44, 55, 110]) }
+      end
+      describe 'for 284' do
+        subject { described_class.proper_divisors_of(284) }
+        it { is_expected.to eq([1, 2, 4, 71, 142]) }
       end
     end
     describe '.factors_of' do
